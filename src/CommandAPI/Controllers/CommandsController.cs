@@ -1,3 +1,5 @@
+using CommandAPI.Data;
+using CommandAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CommandAPI.Controllers;
@@ -6,7 +8,21 @@ namespace CommandAPI.Controllers;
 [ApiController]
 public class CommandsController : ControllerBase
 {
+    private readonly ICommandAPIRepo repository;
+
+    public CommandsController(ICommandAPIRepo repo) => repository = repo;
+
     [HttpGet]
-    public ActionResult<IEnumerable<string>> Get() =>
-        new string[] { "Dieser", "Text", "ist", "vorgecodet" };
+    public ActionResult<IEnumerable<Command>> GetAllCommands() =>
+       Ok(repository.GetAllCommands());
+
+    [HttpGet("{id}")]
+    public ActionResult<Command> GetCommandById(int id)
+    {
+        var commandItem = repository.GetCommandById(id);
+
+        return commandItem == null
+            ? NotFound()
+            : Ok(commandItem);
+    }
 }
