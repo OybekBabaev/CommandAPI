@@ -233,7 +233,7 @@ public class CommandsControllerTests : IDisposable
 
         var result = contra.DeleteCommand(0);
 
-        Assert.IsType<NotFoundResult>(result);
+        Assert.IsType<OkResult>(result);
     }
 
     private List<Command> GetCommands(int num)
